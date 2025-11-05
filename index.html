@@ -13,9 +13,11 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #FFFFFF;
-            color: #1F2937;
+            background: linear-gradient(135deg, #FFD6E8 0%, #C5E3F6 50%, #E7C6FF 100%);
+            background-attachment: fixed;
+            color: #4A5568;
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         .container {
@@ -28,20 +30,20 @@
             text-align: center;
             margin-bottom: 80px;
             padding-bottom: 40px;
-            border-bottom: 1px solid #F3F4F6;
         }
 
         h1 {
             font-size: 2.5rem;
             font-weight: 300;
             letter-spacing: -0.02em;
-            color: #1F2937;
+            color: #2D3748;
             margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
         }
 
         .subtitle {
             font-size: 1rem;
-            color: #6B7280;
+            color: #718096;
             font-weight: 400;
         }
 
@@ -64,21 +66,23 @@
             width: 100%;
             padding: 14px 20px;
             font-size: 0.95rem;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
             outline: none;
             transition: all 0.5s ease;
-            background: #FFFFFF;
-            color: #1F2937;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2D3748;
+            backdrop-filter: blur(10px);
         }
 
         .search-box input:focus {
-            border-color: #1F2937;
-            box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.05);
+            border-color: #E7C6FF;
+            box-shadow: 0 4px 12px rgba(231, 198, 255, 0.3);
+            background: #FFFFFF;
         }
 
         .search-box input::placeholder {
-            color: #9CA3AF;
+            color: #A0AEC0;
         }
 
         .group-filter {
@@ -91,30 +95,34 @@
 
         .group-btn {
             padding: 10px 24px;
-            background: #FFFFFF;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 400;
             font-size: 0.9rem;
             transition: all 0.5s ease;
-            color: #6B7280;
+            color: #4A5568;
+            backdrop-filter: blur(10px);
         }
 
         .group-btn:hover {
-            border-color: #1F2937;
-            color: #1F2937;
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #C5E3F6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(197, 227, 246, 0.3);
         }
 
         .group-btn.active {
-            background: #1F2937;
-            color: #FFFFFF;
-            border-color: #1F2937;
+            background: linear-gradient(135deg, #FFD6E8 0%, #E7C6FF 100%);
+            color: #2D3748;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(255, 214, 232, 0.4);
         }
 
         .stats {
             text-align: center;
-            color: #6B7280;
+            color: #718096;
             margin: 40px 0;
             font-size: 0.9rem;
             font-weight: 400;
@@ -128,32 +136,34 @@
         }
 
         .student-card {
-            background: #FFFFFF;
-            border: 1px solid #E5E7EB;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
             overflow: hidden;
             transition: all 0.5s ease;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: block;
+            backdrop-filter: blur(10px);
         }
 
         .student-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-            border-color: #D1D5DB;
+            transform: translateY(-8px);
+            box-shadow: 0 16px 32px rgba(197, 227, 246, 0.4);
+            border-color: #C5E3F6;
+            background: #FFFFFF;
         }
 
         .card-thumbnail {
             width: 100%;
             height: 220px;
-            background: #F3F4F6;
+            background: linear-gradient(135deg, #FFD6E8 0%, #C5E3F6 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
-            color: #9CA3AF;
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 300;
             position: relative;
             overflow: hidden;
@@ -171,7 +181,24 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.02) 100%);
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+        }
+
+        /* 카드별 다른 그라데이션 */
+        .student-card:nth-child(4n+1) .card-thumbnail:not(.has-image) {
+            background: linear-gradient(135deg, #FFD6E8 0%, #E7C6FF 100%);
+        }
+
+        .student-card:nth-child(4n+2) .card-thumbnail:not(.has-image) {
+            background: linear-gradient(135deg, #C5E3F6 0%, #B5F8FE 100%);
+        }
+
+        .student-card:nth-child(4n+3) .card-thumbnail:not(.has-image) {
+            background: linear-gradient(135deg, #E7C6FF 0%, #FFD6E8 100%);
+        }
+
+        .student-card:nth-child(4n+4) .card-thumbnail:not(.has-image) {
+            background: linear-gradient(135deg, #B5F8FE 0%, #C5E3F6 100%);
         }
 
         .card-content {
@@ -181,13 +208,13 @@
         .student-name {
             font-size: 1.25rem;
             font-weight: 500;
-            color: #1F2937;
+            color: #2D3748;
             margin-bottom: 8px;
             letter-spacing: -0.01em;
         }
 
         .github-id {
-            color: #6B7280;
+            color: #718096;
             font-size: 0.9rem;
             margin-bottom: 12px;
             display: flex;
@@ -204,31 +231,50 @@
 
         .group-badge {
             display: inline-block;
-            padding: 4px 12px;
-            background: #F3F4F6;
-            border-radius: 6px;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #FFD6E8 0%, #E7C6FF 100%);
+            border-radius: 12px;
             font-size: 0.8rem;
-            color: #6B7280;
+            color: #4A5568;
             font-weight: 400;
             margin-top: 4px;
+        }
+
+        /* 배지별 다른 색상 */
+        .student-card:nth-child(4n+1) .group-badge {
+            background: linear-gradient(135deg, #FFD6E8 0%, #E7C6FF 100%);
+        }
+
+        .student-card:nth-child(4n+2) .group-badge {
+            background: linear-gradient(135deg, #C5E3F6 0%, #B5F8FE 100%);
+        }
+
+        .student-card:nth-child(4n+3) .group-badge {
+            background: linear-gradient(135deg, #E7C6FF 0%, #FFD6E8 100%);
+        }
+
+        .student-card:nth-child(4n+4) .group-badge {
+            background: linear-gradient(135deg, #B5F8FE 0%, #C5E3F6 100%);
         }
 
         .loading,
         .no-results,
         .error {
             text-align: center;
-            color: #6B7280;
+            color: #718096;
             font-size: 1rem;
             margin-top: 80px;
             font-weight: 400;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .error {
-            color: #DC2626;
-            background: #FEE2E2;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #FECACA;
+            color: #E53E3E;
+            background: rgba(254, 226, 226, 0.9);
+            border: 2px solid rgba(252, 165, 165, 0.5);
         }
 
         @media (max-width: 768px) {
@@ -258,73 +304,47 @@
             }
         }
 
-        @media (prefers-color-scheme: dark) {
-            /* 다크모드 지원 (선택사항) */
-            body {
-                background: #1F2937;
-                color: #F3F4F6;
-            }
+        /* 부드러운 스크롤 */
+        html {
+            scroll-behavior: smooth;
+        }
 
-            h1 {
-                color: #F3F4F6;
+        /* 로딩 애니메이션 */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
             }
-
-            .subtitle,
-            .stats,
-            .github-id {
-                color: #9CA3AF;
-            }
-
-            .student-card {
-                background: #374151;
-                border-color: #4B5563;
-            }
-
-            .student-card:hover {
-                border-color: #6B7280;
-            }
-
-            .search-box input {
-                background: #374151;
-                border-color: #4B5563;
-                color: #F3F4F6;
-            }
-
-            .search-box input:focus {
-                border-color: #9CA3AF;
-                box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.1);
-            }
-
-            .group-btn {
-                background: #374151;
-                border-color: #4B5563;
-                color: #9CA3AF;
-            }
-
-            .group-btn:hover {
-                border-color: #9CA3AF;
-                color: #F3F4F6;
-            }
-
-            .group-btn.active {
-                background: #F3F4F6;
-                color: #1F2937;
-                border-color: #F3F4F6;
-            }
-
-            .card-thumbnail {
-                background: #4B5563;
-            }
-
-            .group-badge {
-                background: #4B5563;
-                color: #9CA3AF;
-            }
-
-            header {
-                border-bottom-color: #374151;
+            50% {
+                opacity: 0.5;
             }
         }
+
+        .loading {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* 카드 등장 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .student-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .student-card:nth-child(1) { animation-delay: 0.05s; }
+        .student-card:nth-child(2) { animation-delay: 0.1s; }
+        .student-card:nth-child(3) { animation-delay: 0.15s; }
+        .student-card:nth-child(4) { animation-delay: 0.2s; }
+        .student-card:nth-child(5) { animation-delay: 0.25s; }
+        .student-card:nth-child(6) { animation-delay: 0.3s; }
     </style>
 </head>
 <body>
