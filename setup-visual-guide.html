@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학생 갤러리 설정 가이드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .step {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 30px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: -25px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-time {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-left: 10px;
+        }
+
+        .step-content {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .checklist {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.3);
+        }
+
+        .flow-diagram {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .flow-box {
+            display: inline-block;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .flow-arrow {
+            display: inline-block;
+            font-size: 2rem;
+            color: #667eea;
+            margin: 0 10px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .step {
+                padding-left: 20px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 학생 포트폴리오 갤러리</h1>
+        <p class="subtitle">5분 만에 설정 완료! 구글폼부터 웹사이트까지</p>
+
+        <div class="flow-diagram">
+            <h3 style="margin-bottom: 20px;">📊 시스템 흐름</h3>
+            <div class="flow-box">👨‍🎓 학생 입력</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box">📝 구글폼</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box">📊 스프레드시트</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box">⚙️ Apps Script</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box">🌐 갤러리 사이트</div>
+        </div>
+
+        <div class="timeline">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h2 class="step-title">
+                    구글폼 만들기
+                    <span class="step-time">⏱️ 1분</span>
+                </h2>
+                <div class="step-content">
+                    <p><strong>forms.google.com</strong>에서 새 폼 생성</p>
+                    <p style="margin-top: 10px;">필수 질문 5개 추가:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✅ 이름 (단답형, 필수)</li>
+                        <li>✅ GitHub 아이디 (단답형, 필수)</li>
+                        <li>⭕ GitHub Pages URL (단답형, 선택)</li>
+                        <li>✅ 그룹/강좌명 (객관식, 필수)</li>
+                        <li>⭕ 썸네일 이미지 URL (단답형, 선택)</li>
+                    </ul>
+                </div>
+                <div class="success">
+                    ✅ <strong>팁:</strong> "응답" 탭에서 "스프레드시트 만들기"를 클릭하면 자동으로 연결됩니다!
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h2 class="step-title">
+                    스프레드시트 설정
+                    <span class="step-time">⏱️ 1분</span>
+                </h2>
+                <div class="step-content">
+                    <p>생성된 스프레드시트에서:</p>
+                </div>
+                <div class="warning">
+                    ⚠️ <strong>중요!</strong> 시트 이름을 <span class="highlight">"학생정보"</span>로 변경하세요!
+                    <br><small>(하단 탭 더블클릭 → "학생정보" 입력 → Enter)</small>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h2 class="step-title">
+                    Apps Script 설정
+                    <span class="step-time">⏱️ 2분</span>
+                </h2>
+                <div class="step-content">
+                    <p><strong>확장 프로그램 → Apps Script</strong> 메뉴 클릭</p>
+                    <p style="margin-top: 10px;">제공된 <code>google-apps-script.js</code> 코드를 전체 복사하여 붙여넣기</p>
+                </div>
+                <div class="code-block">
+function doGet(e) {
+  const sheet = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getSheetByName('학생정보');
+  // ... 나머지 코드
+}
+                </div>
+                <div class="success">
+                    💾 저장 후 프로젝트 이름: "학생 갤러리 API"
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <h2 class="step-title">
+                    웹 앱 배포
+                    <span class="step-time">⏱️ 1분</span>
+                </h2>
+                <div class="step-content">
+                    <p><strong>배포 → 새 배포</strong> 클릭</p>
+                    <p style="margin-top: 10px;">설정:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>유형: <span class="highlight">웹 앱</span></li>
+                        <li>실행 계정: <span class="highlight">나</span></li>
+                        <li>액세스 권한: <span class="highlight">전체 사용자 (익명 포함)</span></li>
+                    </ul>
+                </div>
+                <div class="warning">
+                    ⚠️ "안전하지 않음" 경고가 나오면:
+                    <br><strong>고급 → [프로젝트명](으)로 이동 → 허용</strong>
+                    <br><small>(본인이 만든 스크립트이므로 안전합니다)</small>
+                </div>
+                <div class="success">
+                    🎉 웹 앱 URL이 생성됩니다! 이 URL을 복사해두세요.
+                    <br><code style="font-size: 0.85rem;">https://script.google.com/macros/s/AKfycby.../exec</code>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <h2 class="step-title">
+                    웹사이트 설정
+                    <span class="step-time">⏱️ 30초</span>
+                </h2>
+                <div class="step-content">
+                    <p><code>student-gallery-google-sheets.html</code> 파일을 열어서:</p>
+                </div>
+                <div class="code-block">
+// 이 줄을 찾아서
+const GOOGLE_APPS_SCRIPT_URL = 
+  'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+// 복사한 URL로 변경
+const GOOGLE_APPS_SCRIPT_URL = 
+  'https://script.google.com/macros/s/AKfycby.../exec';
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">6</div>
+                <h2 class="step-title">
+                    GitHub Pages 배포
+                    <span class="step-time">⏱️ 30초</span>
+                </h2>
+                <div class="step-content">
+                    <p>GitHub 저장소에 업로드:</p>
+                </div>
+                <div class="code-block">
+git clone https://github.com/your-username/repo.git
+cd repo
+cp student-gallery-google-sheets.html index.html
+git add index.html
+git commit -m "학생 갤러리 추가"
+git push
+                </div>
+                <div class="success">
+                    🌐 Settings → Pages에서 배포 활성화
+                    <br>몇 분 후 <code>https://your-username.github.io/repo/</code>에서 확인!
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <h3 style="margin-bottom: 15px;">✅ 설정 완료 체크리스트</h3>
+            <label class="checklist-item">
+                <input type="checkbox"> 구글폼 생성 및 질문 구성 완료
+            </label>
+            <label class="checklist-item">
+                <input type="checkbox"> 스프레드시트 연결 및 시트 이름 "학생정보"로 변경
+            </label>
+            <label class="checklist-item">
+                <input type="checkbox"> Apps Script 코드 붙여넣기 및 저장
+            </label>
+            <label class="checklist-item">
+                <input type="checkbox"> 웹 앱으로 배포 및 URL 복사
+            </label>
+            <label class="checklist-item">
+                <input type="checkbox"> HTML 파일에 URL 입력
+            </label>
+            <label class="checklist-item">
+                <input type="checkbox"> GitHub Pages 배포
+            </label>
+            <label class="checklist-item">
+                <input type="checkbox"> 테스트 응답 제출 및 사이트 확인
+            </label>
+            <label class="checklist-item">
+                <input type="checkbox"> 학생들에게 폼 링크 공유
+            </label>
+        </div>
+
+        <div class="cta-buttons">
+            <a href="QUICK-START.md" class="btn btn-primary">📖 자세한 가이드 보기</a>
+            <a href="student-gallery-google-sheets.html" class="btn btn-secondary">🚀 갤러리 미리보기</a>
+        </div>
+    </div>
+</body>
+</html>

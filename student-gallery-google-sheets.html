@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학생 포트폴리오 갤러리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            max-width: 800px;
+            margin: 30px auto;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            outline: none;
+        }
+
+        .group-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .group-btn {
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .group-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .group-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stats {
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+            font-size: 1.1rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .student-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-thumbnail.has-image {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-thumbnail::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .student-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .github-id {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .group-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .github-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-top: 50px;
+        }
+
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-top: 50px;
+        }
+
+        .error {
+            text-align: center;
+            color: white;
+            font-size: 1.1rem;
+            margin-top: 50px;
+            background: rgba(255, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 학생 포트폴리오 갤러리</h1>
+            <p class="subtitle">웹디자인 수업 결과물 모음</p>
+        </header>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="이름이나 GitHub ID로 검색...">
+            </div>
+        </div>
+
+        <div class="group-filter" id="groupFilter"></div>
+
+        <div class="stats">
+            <span id="displayCount">0</span>개 포트폴리오 표시 중 (전체 <span id="totalCount">0</span>개)
+        </div>
+
+        <div class="loading" id="loading">데이터를 불러오는 중...</div>
+        <div class="gallery" id="gallery" style="display: none;"></div>
+        <div class="no-results" id="noResults" style="display: none;">
+            검색 결과가 없습니다 😢
+        </div>
+        <div class="error" id="error" style="display: none;"></div>
+    </div>
+
+    <script>
+        // ⚠️ 여기에 Google Apps Script 웹 앱 URL을 입력하세요
+        const GOOGLE_APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+        let allStudents = [];
+        let filteredStudents = [];
+        let currentGroup = 'all';
+
+        function createStudentCard(student) {
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            
+            const thumbnailStyle = student.thumbnail 
+                ? `background-image: url('${student.thumbnail}');` 
+                : '';
+            const thumbnailClass = student.thumbnail ? 'has-image' : '';
+            const thumbnailContent = student.thumbnail ? '' : student.initial;
+            
+            card.innerHTML = `
+                <div class="card-thumbnail ${thumbnailClass}" style="${thumbnailStyle}">
+                    ${thumbnailContent}
+                </div>
+                <div class="card-content">
+                    <div class="student-name">${student.name}</div>
+                    <div class="github-id">
+                        <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        @${student.githubId}
+                    </div>
+                    <div class="group-badge">${student.group}</div>
+                    <div class="links">
+                        <a href="${student.siteUrl}" target="_blank" class="btn btn-primary">
+                            포트폴리오 보기
+                        </a>
+                        <a href="https://github.com/${student.githubId}" target="_blank" class="btn btn-secondary">
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function renderGallery(studentsToRender) {
+            const gallery = document.getElementById('gallery');
+            const noResults = document.getElementById('noResults');
+            
+            gallery.innerHTML = '';
+            
+            if (studentsToRender.length === 0) {
+                gallery.style.display = 'none';
+                noResults.style.display = 'block';
+            } else {
+                gallery.style.display = 'grid';
+                noResults.style.display = 'none';
+                studentsToRender.forEach(student => {
+                    gallery.appendChild(createStudentCard(student));
+                });
+            }
+
+            document.getElementById('displayCount').textContent = studentsToRender.length;
+        }
+
+        function createGroupButtons(students) {
+            const groupFilter = document.getElementById('groupFilter');
+            const groups = ['all', ...new Set(students.map(s => s.group))];
+            
+            groupFilter.innerHTML = '';
+            
+            groups.forEach(group => {
+                const btn = document.createElement('button');
+                btn.className = 'group-btn';
+                btn.textContent = group === 'all' ? '전체' : group;
+                if (group === currentGroup) {
+                    btn.classList.add('active');
+                }
+                
+                btn.addEventListener('click', () => {
+                    currentGroup = group;
+                    document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    applyFilters();
+                });
+                
+                groupFilter.appendChild(btn);
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredStudents = allStudents.filter(student => {
+                const matchesGroup = currentGroup === 'all' || student.group === currentGroup;
+                const matchesSearch = student.name.toLowerCase().includes(searchTerm) ||
+                                    student.githubId.toLowerCase().includes(searchTerm) ||
+                                    student.group.toLowerCase().includes(searchTerm);
+                return matchesGroup && matchesSearch;
+            });
+            
+            renderGallery(filteredStudents);
+        }
+
+        async function loadStudents() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            
+            try {
+                if (GOOGLE_APPS_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                    throw new Error('Google Apps Script URL이 설정되지 않았습니다. README.md를 참고하여 설정해주세요.');
+                }
+
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
+                
+                if (!response.ok) {
+                    throw new Error('데이터를 불러오는데 실패했습니다.');
+                }
+                
+                const data = await response.json();
+                allStudents = data.students || [];
+                
+                if (allStudents.length === 0) {
+                    throw new Error('학생 데이터가 없습니다. 구글 스프레드시트를 확인해주세요.');
+                }
+                
+                loading.style.display = 'none';
+                document.getElementById('gallery').style.display = 'grid';
+                document.getElementById('totalCount').textContent = allStudents.length;
+                
+                createGroupButtons(allStudents);
+                applyFilters();
+                
+            } catch (err) {
+                console.error('Error:', err);
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = '❌ ' + err.message;
+            }
+        }
+
+        // 검색 기능
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        // 페이지 로드시 데이터 불러오기
+        loadStudents();
+    </script>
+</body>
+</html>
