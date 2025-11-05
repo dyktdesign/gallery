@@ -184,7 +184,6 @@
             background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
         }
 
-        /* 카드별 다른 그라데이션 */
         .student-card:nth-child(4n+1) .card-thumbnail:not(.has-image) {
             background: linear-gradient(135deg, #FFD6E8 0%, #E7C6FF 100%);
         }
@@ -240,7 +239,6 @@
             margin-top: 4px;
         }
 
-        /* 배지별 다른 색상 */
         .student-card:nth-child(4n+1) .group-badge {
             background: linear-gradient(135deg, #FFD6E8 0%, #E7C6FF 100%);
         }
@@ -304,12 +302,10 @@
             }
         }
 
-        /* 부드러운 스크롤 */
         html {
             scroll-behavior: smooth;
         }
 
-        /* 로딩 애니메이션 */
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -323,7 +319,6 @@
             animation: pulse 2s ease-in-out infinite;
         }
 
-        /* 카드 등장 애니메이션 */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -375,8 +370,12 @@
     </div>
 
     <script>
+        // ========================================
+        // Standalone + 보안 강화 버전
+        // ========================================
+        
         // ⚠️ 여기에 Google Apps Script 웹 앱 URL을 입력하세요
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAhQbythcHhzVx45H0tSENKNJxmnVi9oHlsGxxv-DzUox7mQnM7oprw4cY4doJzA92/exec';
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzosIwcM_HWVrTZD49rlydKxnUsHWKegW2gDnT5I9hOXsmUflhg5oj70rRWqqNAbUo/exec';
 
         let allStudents = [];
         let filteredStudents = [];
@@ -472,6 +471,7 @@
             renderGallery(filteredStudents);
         }
 
+        // 보안: Origin을 포함하여 데이터 요청
         async function loadStudents() {
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
@@ -481,13 +481,30 @@
                     throw new Error('Google Apps Script URL이 설정되지 않았습니다. HTML 파일에서 URL을 입력해주세요.');
                 }
 
-                const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
+                // 현재 페이지의 origin을 파라미터로 전송
+                const currentOrigin = window.location.origin;
+                const urlWithOrigin = `${GOOGLE_APPS_SCRIPT_URL}?origin=${encodeURIComponent(currentOrigin)}`;
+                
+                console.log('Fetching data from:', urlWithOrigin);
+                
+                const response = await fetch(urlWithOrigin);
                 
                 if (!response.ok) {
-                    throw new Error('데이터를 불러오는데 실패했습니다.');
+                    if (response.status === 403) {
+                        throw new Error('접근이 거부되었습니다. Apps Script의 ALLOWED_ORIGINS에 현재 도메인을 추가하세요.');
+                    } else if (response.status === 429) {
+                        throw new Error('너무 많은 요청이 발생했습니다. 잠시 후 다시 시도해주세요.');
+                    }
+                    throw new Error(`데이터를 불러오는데 실패했습니다 (${response.status})`);
                 }
                 
                 const data = await response.json();
+                
+                // 에러 응답 체크
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
                 allStudents = data.students || [];
                 
                 if (allStudents.length === 0) {
@@ -505,7 +522,7 @@
                 console.error('Error:', err);
                 loading.style.display = 'none';
                 error.style.display = 'block';
-                error.textContent = err.message;
+                error.textContent = '❌ ' + err.message;
             }
         }
 
